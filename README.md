@@ -1,6 +1,6 @@
 # PRUEBAS RPGLE USANDO ILE PROCEDURES
 
-Se muestran ejemplos de uso de procedimientos.
+Se muestran ejemplos de uso de procedimientos y de funciones.
 Para realizar esta prueba se han creado los siguientes fuentes en estos contenedores.
 
 ## QDDSSRC
@@ -22,7 +22,7 @@ Si no se encuentra el valor informado (101, 102, 103 o 104) aparece un mensaje d
 
 ## QRPGLESRC
 
-Se han creado tres ejemplos:
+Se han creado tres ejemplos de uso de procedure y un ejemplo de uso de función:
 
 1. Procedure interno en programa
    Es el fuente ordpri01.rpgle.
@@ -44,7 +44,7 @@ Se han creado tres ejemplos:
 
 3. Utilización de Service Program
    Se ha creado el service program ordsrv.rpgle.
-   Notar el nomain indicando que no sigue el ciclo lógico de programa. También indicar que en el procedure se indica export.
+   Notar el nomain indicando que no sigue el ciclo lógico de programa. También indicar que en el procedure Obtener_Nombre_Producto se indica export.
    Otra cosa importante es que el fichero está declarado dentro del procedure, algo que antes de la versión 6.1 no era posible. Para funcionar con un fichero en un procedure, indicar que hay que declarar una DS donde se carga la información leida.
    Se compila con los siguientes dos comandos:
 
@@ -54,7 +54,7 @@ Se han creado tres ejemplos:
    ```
 
    Se crea también el programa que hace uso del service program, esto es, ordsrvc1.rpgle.
-   Indicar que en este caso, como se compila con CRTRPGMOD, por defecto ya es ILE, y no se indica en el programa dftactgrp.
+   Indicar que en este caso, como se compila con CRTRPGMOD, por defecto ya es ILE, y no se indica en el programa dftactgrp. Tampoco se indica actgrp.
    Se compila con los siguientes dos comandos (el segundo comando crea realmente el PGM)
 
    ```
@@ -66,4 +66,23 @@ Se han creado tres ejemplos:
 
    ```
    CALL ORDSRVC1
+   ```
+
+4. Llamada a función
+   Usando el mismo service program, ordsrv.rpgle, podemos ver que el procedure (o función) Obtener_Nombre_Producto_Funcion indica el tipo y longitud de variable que se devuelve. También se puede ver el return con dicho campo.
+
+   Se ha creado el programa que hace uso de la función Obtener_Nombre_Producto_Funcion, esto es, ordsrvf1.rpgle.
+   Puede verse como se asigna a una variable la llamada a la función.
+
+   Para compilar:
+
+   ```
+   CRTRPGMOD MODULE(MyLib/ORDSRVF1) DBGVIEW(*SOURCE) SRCFILE(MyLib/QRPGLESRC)
+   CRTPGM PGM(MyLib/ORDSRVF1) BNDSRVPGM(ORDSRV) ACTGRP(*NEW)
+   ```
+
+   Para ejecutar:
+
+   ```
+   CALL ORDSRVF1
    ```

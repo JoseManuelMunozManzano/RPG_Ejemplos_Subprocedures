@@ -15,6 +15,11 @@
     *n char(60);
   end-pr;
 
+  dcl-pr Obtener_Nombre_Producto_Funcion char(15);
+    *n char(3) const;
+    *n char(60);
+  end-pr;  
+
   //************************************************
   // PROCEDURES
   //************************************************
@@ -36,3 +41,22 @@
     endIf;
 
   end-proc;
+
+  dcl-proc Obtener_Nombre_Producto_Funcion export;
+    dcl-pi *n char(15);
+      numProducto char(3) const;
+      msgError char(60);
+    end-pi;
+
+    dcl-f ordmst disk(*ext) usage(*input) keyed;
+    dcl-ds dsOrdmst likerec(rordmst);
+
+    chain (numProducto) ordmst dsOrdmst;
+    if %found(ordmst);
+      return dsOrdmst.orditmnam;
+    else;
+      msgError = 'Error, código de producto no encontrado';
+      return *blanks;
+    endIf;
+
+  end-proc;  
